@@ -1,0 +1,17 @@
+#!/bin/bash
+# Serveo Tunnel Auto-Starter
+
+echo "🚀 Starting Serveo Tunnel..."
+echo "📅 $(date)"
+echo "🌐 Domain: swill.serveo.net"
+echo "🔗 Forwarding to: localhost:4444"
+
+while true; do
+    echo "🔄 Establishing Serveo tunnel..."
+    
+    # Запускаем Serveo туннель
+    ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -R swill:80:localhost:4444 serveo.net
+    
+    echo "❌ Tunnel disconnected, reconnecting in 10 seconds..."
+    sleep 10
+done
