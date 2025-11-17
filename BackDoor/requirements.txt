@@ -1,6 +1,0 @@
-# SWILL Server Requirements
-requests>=2.28.0
-flask>=2.2.0
-opencv-python>=4.7.0
-numpy>=1.24.0
-Pillow>=9.4.0
